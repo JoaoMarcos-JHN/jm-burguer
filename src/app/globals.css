@@ -1,0 +1,137 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+/* Light theme only in V1 (docs/decisoes.md). */
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-archivo);
+  --font-heading: var(--font-archivo);
+  --font-display: var(--font-shrikhand);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --color-ticket: var(--ticket);
+  --color-ticket-ink: var(--ticket-ink);
+  --color-mustard: var(--mustard);
+  --color-neon-off: var(--neon-off);
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
+}
+
+:root {
+  color-scheme: light;
+
+  /* The palette, named after the diner. */
+  --ketchup: #c8102e;
+  --mustard: #f2b807;
+  --ticket: #e3efdd; /* comanda paper */
+  --ticket-ink: #3e7a5c; /* ruled lines and notes on the comanda */
+  --jukebox: #1d2a44; /* text, instead of black */
+  --tile: #f6f8f7; /* page background */
+  --neon-off: #6f7875; /* the open sign when the store is closed */
+
+  --background: var(--tile);
+  --foreground: var(--jukebox);
+  --card: #ffffff;
+  --card-foreground: var(--jukebox);
+  --popover: #ffffff;
+  --popover-foreground: var(--jukebox);
+  --primary: var(--ketchup);
+  --primary-foreground: #ffffff;
+  --secondary: var(--ticket);
+  --secondary-foreground: var(--jukebox);
+  --muted: #e9eeec;
+  --muted-foreground: #55607a;
+  --accent: var(--ticket);
+  --accent-foreground: var(--jukebox);
+  --destructive: #a3122a;
+  --border: #d5dcd9;
+  --input: #c3ccc8;
+  /* Darker than the brand mustard so the focus ring reaches 3:1 on white. */
+  --ring: #a87700;
+  --radius: 0.5rem;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+  html {
+    @apply font-sans;
+    scroll-padding-top: 4rem; /* the sticky category bar */
+  }
+}
+
+@layer components {
+  /* The guest check: green paper with a perforated top edge. */
+  .comanda-paper {
+    position: relative;
+    background-color: var(--ticket);
+    color: var(--jukebox);
+    padding-top: 0.75rem;
+  }
+  .comanda-paper::before {
+    content: "";
+    position: absolute;
+    inset: -5px 0 auto;
+    height: 10px;
+    background: radial-gradient(circle, var(--perforation, var(--tile)) 3.5px, transparent 4px) 0
+      0 / 14px 10px repeat-x;
+  }
+
+  /* The dotted leader between a dish and its price on a printed menu. */
+  .menu-leader {
+    flex: 1;
+    min-width: 1.5rem;
+    border-bottom: 2px dotted currentColor;
+    opacity: 0.35;
+    transform: translateY(-0.3em);
+  }
+
+  /* The neon sign glows only when the store is open. */
+  .neon-on {
+    color: var(--ketchup);
+    text-shadow:
+      0 0 6px color-mix(in srgb, var(--ketchup) 55%, transparent),
+      0 0 14px color-mix(in srgb, var(--ketchup) 35%, transparent);
+  }
+}
+
+/* Answers an action: the comanda count bumps when an item is added. */
+@keyframes bump {
+  40% {
+    transform: scale(1.25);
+  }
+}
+.animate-bump {
+  animation: bump 320ms ease-out;
+}
+@media (prefers-reduced-motion: reduce) {
+  .animate-bump {
+    animation: none;
+  }
+}
